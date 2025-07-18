@@ -3,27 +3,37 @@ const ramos = [
          { 
             semestre :  1 , 
             ramos :  [ 
-                {  codigo :  "QQUI101" ,
+                { 
+                  codigo :  "QQUI101" ,
                  nombre :  "Química General I" ,
                  creditos :  9 ,
                  prerequisitos :  [],
                  abre :  [ "QQUI202" ],
                  nota :  0
                 }, 
-                {  codigo :  "FPED126" ,
+                {  
+                  codigo :  "FPED126" ,
                  nombre :  "Pedagogía e identidad profesional docente" ,
                  créditos :  4 ,
                  prerequisitos :  [],
                  abre :  [ "QQUI204" ],
                  nota :  0
                 }, 
-                {  codigo :  "QQUI103" ,
+                {  
+                  codigo :  "QQUI103" ,
                  nombre :  "Habilidades comunicacionales" ,
                  créditos :  4 ,
                  prerequisitos :  [],
                  abre :  [],  nota :  0
                 }, 
-                {  codigo :  "QQUI104" ,  nombre :  "Introducción al aprendizaje de las ciencias" ,  creditos :  4 ,  prerequisitos :  [],  abre :  [ "QQUI503" ],  nota :  0  }, 
+                {  
+                  codigo :  "QQUI104" ,
+                  nombre :  "Introducción al aprendizaje de las ciencias" ,
+                  creditos :  4 ,
+                  prerequisitos :  [],
+                  abre :  [ "QQUI503" ],
+                  nota :  0 
+                }, 
                 {  codigo :  "QQUI02" ,  nombre :  "Matemática I" ,  creditos :  6 ,  prerequisitos :  [],  abre :  [ "QQUI201" ,  "QQUI205" ],  nota :  0  }, 
                 {  codigo :  "QQUI105" ,  nombre :  "Fortalecimiento de habilidades científicas de entrada" ,  créditos :  3 ,  prerequisitos :  [], abre :  [],  nota:  0  } 
             ] 
