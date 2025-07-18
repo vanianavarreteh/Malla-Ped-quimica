@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>                                                                                                                                                          
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malla Interactiva - Pedagogía en Química</title>
   <link rel="stylesheet" href="styles.css">
-</head>                                                                                                                                                          
-<body>                                                                                                                                                          
+</head>
+<body>
   <h1>Malla Interactiva - Pedagogía en Química</h1>
-  <div id="controls">
-    <input type="text" id="buscar" placeholder="Buscar por código o nombre..." />
-    <select id="filtro-semestre">
-      <option value="">Todos los semestres</option>
-      <option value="1">Semestre 1</option>
-      <option value="2">Semestre 2</option>
-    </select>
+  
+  <div class="stats-container">
+    <p>Visualiza tu progreso académico: haz clic en los ramos disponibles para aprobarlos</p>
   </div>
-  <div id="stats">
-    <p>Promedio General: <span id="promedio-general">-</span></p>
-    <p>Créditos Aprobados: <span id="creditos-aprobados">0</span></p>
-    <p>Total de Ramos: <span id="total-ramos">0</span></p>
-    <p>Ramos Aprobados: <span id="ramos-aprobados">0</span></p>
-  </div>                                                            
+  
   <div id="malla"></div>
   <script src="script.js"></script>
-</body>                                                        
-</html>                                                        
+</body>
+</html>
