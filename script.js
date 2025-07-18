@@ -149,341 +149,94 @@ const mallaData = [
         }
     ];
 
-    // Variables globales
-    let approvedCourses = [];
-    let currentCourseEditing = null;
-    let currentSemesterForElectivo = null;
-    let electivos = [];
+const estadoRamos = {};
+const promedios = {};
+const creditos = {};
 
-    // Inicializar la aplicación
-    function init() {
-        renderSemesters();
-        updateStats();
-        setupEventListeners();
-        loadFromLocalStorage();
+function renderMalla() {
+  const container = document.getElementById("malla");
+  container.innerHTML = "";
+
+  ramos.forEach(ramo => {
+    const aprobado = estadoRamos[ramo.codigo] || false;
+    const promedio = promedios[ramo.codigo] || "";
+    const requisitosCumplidos = ramo.prerrequisitos.every(pr => estadoRamos[pr]);
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    if (aprobado) {
+      card.classList.add("aprobado");
+    } else if (requisitosCumplidos) {
+      card.classList.add("habilitado");
+    } else {
+      card.classList.add("bloqueado");
     }
 
-    // Renderizar todos los semestres
-    function renderSemesters() {
-        const container = document.getElementById('semesters-container');
-        container.innerHTML = '';
+    card.innerHTML = `
+      <h3>${ramo.nombre}</h3>
+      <p><strong>Código:</strong> ${ramo.codigo}</p>
+      <p><strong>Semestre:</strong> ${ramo.semestre}</p>
+      <p><strong>Créditos:</strong> ${ramo.creditos}</p>
+      <p><strong>Prerrequisitos:</strong> ${ramo.prerrequisitos.join(", ") || "Ninguno"}</p>
+      <label>Promedio: <input type="number" step="0.1" min="1.0" max="7.0" value="${promedio}" id="prom-${ramo.codigo}"></label><br>
+      <button onclick="aprobarRamo('${ramo.codigo}')" ${aprobado || !requisitosCumplidos ? "disabled" : ""}>Aprobar ramo</button>
+    `;
 
-        mallaData.forEach(semesterData => {
-            const semesterElement = document.createElement('div');
-            semesterElement.className = 'semester';
-            
-            const header = document.createElement('div');
-            header.className = 'semester-header';
-            
-            const title = document.createElement('h2');
-            title.className = 'semester-title';
-            title.textContent = `Semestre ${semesterData.semestre}`;
-            
-            header.appendChild(title);
-            
-            // Agregar botón para electivos solo a partir del tercer semestre
-            if (semesterData.semestre >= 3) {
-                const addButton = document.createElement('button');
-                addButton.className = 'add-electivo-btn';
-                addButton.textContent = '+ Electivo';
-                addButton.dataset.semester = semesterData.semestre;
-                header.appendChild(addButton);
-            }
-            
-            semesterElement.appendChild(header);
-            
-            const coursesGrid = document.createElement('div');
-            coursesGrid.className = 'courses-grid';
-            
-            // Renderizar ramos normales
-            semesterData.ramos.forEach(course => {
-                coursesGrid.appendChild(createCourseElement(course, semesterData.semestre));
-            });
-            
-            // Renderizar electivos si existen para este semestre
-            const semesterElectivos = electivos.filter(e => e.semestre === semesterData.semestre);
-            semesterElectivos.forEach(electivo => {
-                coursesGrid.appendChild(createCourseElement(electivo, semesterData.semestre));
-            });
-            
-            semesterElement.appendChild(coursesGrid);
-            container.appendChild(semesterElement);
-        });
-    }
+    container.appendChild(card);
+  });
 
-    // Crear elemento de curso
-    function createCourseElement(course, semester) {
-        const courseElement = document.createElement('div');
-        
-        // Determinar el estado del curso
-        const isApproved = approvedCourses.includes(course.codigo || course.nombre);
-        const prereqsMet = checkPrerequisites(course.prerequisitos);
-        
-        if (isApproved) {
-            courseElement.className = 'course approved';
-        } else if (prereqsMet) {
-            courseElement.className = 'course unlocked';
-        } else {
-            courseElement.className = 'course locked';
-        }
-        
-        // Información del curso
-        const codeElement = document.createElement('div');
-        codeElement.className = 'course-code';
-        codeElement.textContent = course.codigo || 'Electivo';
-        
-        const nameElement = document.createElement('div');
-        nameElement.className = 'course-name';
-        nameElement.textContent = course.nombre;
-        
-        const creditsElement = document.createElement('div');
-        creditsElement.className = 'course-credits';
-        creditsElement.textContent = `${course.creditos} créditos`;
-        
-        // Mostrar nota si está aprobado
-        if (isApproved && course.nota > 0) {
-            const gradeElement = document.createElement('div');
-            gradeElement.className = 'course-grade';
-            gradeElement.textContent = course.nota.toFixed(1);
-            courseElement.appendChild(gradeElement);
-        }
-        
-        // Información de prerrequisitos si está bloqueado
-        if (!prereqsMet && course.prerequisitos.length > 0) {
-            const prereqInfo = document.createElement('div');
-            prereqInfo.className = 'prereq-info';
-            prereqInfo.textContent = `Prerrequisitos: ${course.prerequisitos.join(', ')}`;
-            courseElement.appendChild(prereqInfo);
-        }
-        
-        courseElement.appendChild(codeElement);
-        courseElement.appendChild(nameElement);
-        courseElement.appendChild(creditsElement);
-        
-        // Configurar evento de clic
-        if (!isApproved && prereqsMet) {
-            courseElement.addEventListener('click', () => openGradeModal(course, semester));
-        }
-        
-        return courseElement;
-    }
+  actualizarEstadisticas();
+}
 
-    // Verificar si se cumplen los prerrequisitos
-    function checkPrerequisites(prereqs) {
-        if (!prereqs || prereqs.length === 0) return true;
-        
-        return prereqs.every(prereq => {
-            // Verificar si es un ramo aprobado o un electivo aprobado
-            return approvedCourses.includes(prereq) || 
-                   electivos.some(e => e.nombre === prereq && approvedCourses.includes(e.nombre));
-        });
-    }
+function aprobarRamo(codigo) {
+  const input = document.getElementById(`prom-${codigo}`);
+  const promedio = parseFloat(input.value);
+  const ramo = ramos.find(r => r.codigo === codigo);
 
-    // Abrir modal para ingresar nota
-    function openGradeModal(course, semester) {
-        currentCourseEditing = { ...course, semester };
-        
-        const modal = document.getElementById('grade-modal');
-        const title = document.getElementById('modal-title');
-        const input = document.getElementById('grade-input');
-        
-        title.textContent = `Ingresar nota para ${course.nombre}`;
-        input.value = course.nota > 0 ? course.nota : '';
-        
-        modal.style.display = 'block';
-    }
+  if (!isNaN(promedio) && promedio >= 1.0 && promedio <= 7.0) {
+    estadoRamos[codigo] = true;
+    promedios[codigo] = promedio;
+    creditos[codigo] = ramo.creditos;
+    renderMalla();
+  } else {
+    alert("Por favor ingresa un promedio válido entre 1.0 y 7.0.");
+  }
+}
 
-    // Configurar event listeners
-    function setupEventListeners() {
-        // Guardar nota
-        document.getElementById('save-grade').addEventListener('click', saveGrade);
-        
-        // Cerrar modales
-        document.querySelectorAll('.close-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.getElementById('grade-modal').style.display = 'none';
-                document.getElementById('electivo-modal').style.display = 'none';
-            });
-        });
-        
-        // Cerrar modal al hacer clic fuera
-        window.addEventListener('click', (event) => {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
-            }
-        });
-        
-        // Agregar electivo
-        document.addEventListener('click', (event) => {
-            if (event.target.classList.contains('add-electivo-btn')) {
-                currentSemesterForElectivo = parseInt(event.target.dataset.semester);
-                document.getElementById('electivo-modal').style.display = 'block';
-            }
-        });
-        
-        // Guardar electivo
-        document.getElementById('save-electivo').addEventListener('click', saveElectivo);
-    }
+function actualizarEstadisticas() {
+  const promediosAprobados = Object.values(promedios);
+  const creditosTotales = Object.values(creditos).reduce((a, b) => a + b, 0);
 
-    // Guardar nota
-    function saveGrade() {
-        const input = document.getElementById('grade-input');
-        const grade = parseFloat(input.value);
-        
-        if (isNaN(grade) || grade < 1 || grade > 7) {
-            alert('Por favor ingrese una nota válida entre 1.0 y 7.0');
-            return;
-        }
-        
-        // Actualizar el curso en los datos
-        const semesterIndex = mallaData.findIndex(s => s.semestre === currentCourseEditing.semester);
-        if (semesterIndex !== -1) {
-            const courseIndex = mallaData[semesterIndex].ramos.findIndex(
-                c => (c.codigo === currentCourseEditing.codigo && c.codigo) || 
-                     (c.nombre === currentCourseEditing.nombre && !c.codigo)
-            );
-            
-            if (courseIndex !== -1) {
-                mallaData[semesterIndex].ramos[courseIndex].nota = grade;
-                approvedCourses.push(currentCourseEditing.codigo || currentCourseEditing.nombre);
-            } else {
-                // Buscar en electivos
-                const electivoIndex = electivos.findIndex(
-                    e => e.semestre === currentCourseEditing.semester && 
-                         e.nombre === currentCourseEditing.nombre
-                );
-                
-                if (electivoIndex !== -1) {
-                    electivos[electivoIndex].nota = grade;
-                    approvedCourses.push(currentCourseEditing.nombre);
-                }
-            }
-        }
-        
-        // Guardar en localStorage
-        saveToLocalStorage();
-        
-        // Actualizar la vista
-        renderSemesters();
-        updateStats();
-        
-        // Cerrar modal
-        document.getElementById('grade-modal').style.display = 'none';
-    }
+  if (promediosAprobados.length === 0) {
+    document.getElementById("promedio-general").innerText = "-";
+  } else {
+    const promedioFinal = (promediosAprobados.reduce((a, b) => a + b, 0) / promediosAprobados.length).toFixed(2);
+    document.getElementById("promedio-general").innerText = promedioFinal;
+  }
 
-    // Guardar electivo
-    function saveElectivo() {
-        const nameInput = document.getElementById('electivo-name');
-        const creditsInput = document.getElementById('electivo-credits');
-        
-        const name = nameInput.value.trim();
-        const credits = parseInt(creditsInput.value);
-        
-        if (!name || isNaN(credits) || credits < 1) {
-            alert('Por favor ingrese un nombre válido y créditos mayores a 0');
-            return;
-        }
-        
-        // Crear nuevo electivo
-        const newElectivo = {
-            nombre: name,
-            creditos: credits,
-            prerequisitos: [],
-            abre: [],
-            semestre: currentSemesterForElectivo,
-            nota: 0
-        };
-        
-        electivos.push(newElectivo);
-        
-        // Guardar en localStorage
-        saveToLocalStorage();
-        
-        // Actualizar la vista
-        renderSemesters();
-        
-        // Limpiar y cerrar modal
-        nameInput.value = '';
-        creditsInput.value = '';
-        document.getElementById('electivo-modal').style.display = 'none';
-    }
+  document.getElementById("creditos-aprobados").innerText = creditosTotales;
+}
 
-    // Actualizar estadísticas
-    function updateStats() {
-        // Calcular créditos aprobados
-        let totalCredits = 0;
-        let totalCourses = 0;
-        let sumGrades = 0;
-        
-        // Recorrer ramos normales
-        mallaData.forEach(semester => {
-            semester.ramos.forEach(course => {
-                if (approvedCourses.includes(course.codigo || course.nombre) {
-                    totalCredits += course.creditos;
-                    if (course.nota > 0) {
-                        sumGrades += course.nota;
-                        totalCourses++;
-                    }
-                }
-            });
-        });
-        
-        // Recorrer electivos
-        electivos.forEach(course => {
-            if (approvedCourses.includes(course.nombre)) {
-                totalCredits += course.creditos;
-                if (course.nota > 0) {
-                    sumGrades += course.nota;
-                    totalCourses++;
-                }
-            }
-        });
-        
-        // Actualizar UI
-        document.getElementById('creditos-aprobados').textContent = totalCredits;
-        
-        const average = totalCourses > 0 ? (sumGrades / totalCourses).toFixed(1) : 0;
-        document.getElementById('promedio-general').textContent = average;
-    }
+function agregarOptativo() {
+  const semestre = parseInt(document.getElementById("semestre-opt").value);
+  const nombre = document.getElementById("nombre-opt").value;
+  const creditos = parseInt(document.getElementById("creditos-opt").value);
+  const codigo = "OPT" + Math.floor(Math.random() * 10000);
 
-    // Guardar en localStorage
-    function saveToLocalStorage() {
-        localStorage.setItem('approvedCourses', JSON.stringify(approvedCourses));
-        localStorage.setItem('mallaData', JSON.stringify(mallaData));
-        localStorage.setItem('electivos', JSON.stringify(electivos));
-    }
+  if (semestre >= 3 && nombre && creditos > 0) {
+    ramos.push({
+      codigo,
+      nombre,
+      semestre,
+      prerrequisitos: [],
+      abre: [],
+      creditos
+    });
+    renderMalla();
+  } else {
+    alert("Completa todos los campos correctamente (desde semestre 3 y al menos 1 crédito).");
+  }
+}
 
-    // Cargar desde localStorage
-    function loadFromLocalStorage() {
-        const savedCourses = localStorage.getItem('approvedCourses');
-        const savedMalla = localStorage.getItem('mallaData');
-        const savedElectivos = localStorage.getItem('electivos');
-        
-        if (savedCourses) {
-            approvedCourses = JSON.parse(savedCourses);
-        }
-        
-        if (savedMalla) {
-            const parsedMalla = JSON.parse(savedMalla);
-            // Actualizar las notas en mallaData
-            parsedMalla.forEach((semester, sIdx) => {
-                semester.ramos.forEach((course, cIdx) => {
-                    if (mallaData[sIdx] && mallaData[sIdx].ramos[cIdx]) {
-                        mallaData[sIdx].ramos[cIdx].nota = course.nota;
-                    }
-                });
-            });
-        }
-        
-        if (savedElectivos) {
-            electivos = JSON.parse(savedElectivos);
-        }
-        
-        // Actualizar la vista
-        renderSemesters();
-        updateStats();
-    }
-
-    // Iniciar la aplicación
-    init();
-});
+window.onload = renderMalla;
