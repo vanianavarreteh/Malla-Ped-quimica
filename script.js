@@ -1,4 +1,15 @@
-  const mallaData = [
+const ramos = [
+  {
+    codigo: "QQUI101",
+    nombre: "Química General I",
+    semestre: 1,
+    prerrequisitos: [],
+    abre: ["QQUI202"],
+    creditos: 9
+  }
+];
+
+const mallaData = [
         // Primer semestre
         {
             semestre: 1,
