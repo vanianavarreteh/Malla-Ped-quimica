@@ -2,14 +2,14 @@
 const ramos = [
          { 
                 { 
-                  codigo :  "QQUI101" ,
-                 nombre :  "Química General I" ,
-                 creditos :  9 ,
+                  codigo: "QQUI101",
+                 nombre: "Química General I",
+                 creditos: 9,
                   Semestre: 1, 
-                 prerequisitos :  [],
-                 abre :  [ "QQUI202" ],
-                 nota :  0
-                }, 
+                 prerequisitos: [],
+                 abre: ["QQUI202"],
+                 nota: 0
+                },
                 {  
                   codigo :  "FPED126" ,
                  nombre :  "Pedagogía e identidad profesional docente" ,
