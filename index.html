@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Interactiva - Pedagogía en Química</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Malla Interactiva - Pedagogía en Química</h1>
+  <div id="stats">
+    <p>Promedio General: <span id="promedio-general">-</span></p>
+    <p>Créditos Aprobados: <span id="creditos-aprobados">0</span></p>
+  </div>
+  <div id="malla"></div>
+  <div id="optativos">
+    <h2>Agregar Ramo Optativo</h2>
+    <label for="semestre-opt">Semestre:</label>
+    <input type="number" id="semestre-opt" min="3" max="10" />
+    <label for="nombre-opt">Nombre:</label>
+    <input type="text" id="nombre-opt" />
+    <label for="creditos-opt">Créditos:</label>
+    <input type="number" id="creditos-opt" min="1" max="10" />
+    <button onclick="agregarOptativo()">Agregar</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
