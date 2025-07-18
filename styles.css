@@ -1,0 +1,98 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #e6fff5;
+  color: #003d33;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #00796b;
+  text-align: center;
+}
+
+#malla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.card {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  opacity: 1;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 0.3rem 0;
+}
+
+.card.aprobado {
+  background: #80deea;
+  border-color: #00acc1;
+  text-decoration: line-through;
+}
+
+.card.habilitado {
+  background: #b2dfdb;
+  border-color: #00796b;
+}
+
+.card.bloqueado {
+  background: #eeeeee;
+  border-color: #bdbdbd;
+  opacity: 0.6;
+}
+
+input[type="number"], input[type="text"] {
+  width: 100px;
+  padding: 0.2rem;
+  margin: 0 0.3rem;
+  border: 1px solid #004d40;
+  border-radius: 5px;
+}
+
+button {
+  background: #009688;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #80cbc4;
+  cursor: not-allowed;
+}
+
+#stats {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#optativos {
+  margin-top: 3rem;
+  background-color: #d0f0e9;
+  border: 2px dashed #00796b;
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
