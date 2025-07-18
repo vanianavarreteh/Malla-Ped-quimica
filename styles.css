@@ -84,15 +84,3 @@ button:disabled {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-
-#optativos {
-  margin-top: 3rem;
-  background-color: #d0f0e9;
-  border: 2px dashed #00796b;
-  padding: 1rem;
-  border-radius: 10px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
