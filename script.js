@@ -1,23 +1,35 @@
-const ramos = [
-  {
-    codigo: "QQUI101",
-    nombre: "Química General I",
-    semestre: 1,
-    prerrequisitos: [],
-    abre: ["QQUI202"],
-    creditos: 9
-  }
-];
-
 const mallaData = [
         // Primer semestre
         {
             semestre: 1,
             ramos: [
-                { codigo: "QQUI101", nombre: "Química General I", creditos: 9, prerequisitos: [], abre: ["QQUI202"], nota: 0 },
-                { codigo: "FPED126", nombre: "Pedagogía e identidad profesional docente", creditos: 4, prerequisitos: [], abre: ["QQUI204"], nota: 0 },
-                { codigo: "QQUI103", nombre: "Habilidades comunicacionales", creditos: 4, prerequisitos: [], abre: [], nota: 0 },
-                { codigo: "QQUI104", nombre: "Introducción al aprendizaje de las ciencias", creditos: 4, prerequisitos: [], abre: ["QQUI503"], nota: 0 },
+                { codigo: "QQUI101",
+                 nombre: "Química General I",
+                 creditos: 9,
+                 prerequisitos: [],
+                 abre: ["QQUI202"],
+                 nota: 0
+                },
+                { codigo: "FPED126",
+                  nombre: "Pedagogía e identidad profesional docente",
+                 creditos: 4, prerequisitos: [],
+                 abre: ["QQUI204"],
+                 nota: 0
+                },
+                { codigo: "QQUI103",
+                 nombre: "Habilidades comunicacionales",
+                 creditos: 4,
+                 prerequisitos: [],
+                 abre: [],
+                 nota: 0
+                },
+                { codigo: "QQUI104",
+                 nombre: "Introducción al aprendizaje de las ciencias",
+                 creditos: 4,
+                 prerequisitos: [],
+                 abre: ["QQUI503"],
+                 nota: 0
+                },
                 { codigo: "QQUI02", nombre: "Matemática I", creditos: 6, prerequisitos: [], abre: ["QQUI201", "QQUI205"], nota: 0 },
                 { codigo: "QQUI105", nombre: "Fortalecimiento de habilidades científicas de entrada", creditos: 3, prerequisitos: [], abre: [], nota: 0 }
             ]
