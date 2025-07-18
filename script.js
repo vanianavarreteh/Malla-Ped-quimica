@@ -30,21 +30,74 @@ const mallaData = [
                  abre: ["QQUI503"],
                  nota: 0
                 },
-                { codigo: "QQUI02", nombre: "Matemática I", creditos: 6, prerequisitos: [], abre: ["QQUI201", "QQUI205"], nota: 0 },
-                { codigo: "QQUI105", nombre: "Fortalecimiento de habilidades científicas de entrada", creditos: 3, prerequisitos: [], abre: [], nota: 0 }
+                { codigo: "QQUI02",
+                 nombre: "Matemática I",
+                 creditos: 6,
+                 prerequisitos: [],
+                 abre: ["QQUI201", "QQUI205"],
+                 nota: 0
+                },
+                { codigo: "QQUI105",
+                 nombre: "Fortalecimiento de habilidades científicas de entrada",
+                 creditos: 3,
+                 prerequisitos: [],
+                 abre: [],
+                 nota: 0 
+                }
             ]
         },
         // Segundo semestre
         {
             semestre: 2,
             ramos: [
-                { codigo: "QQUI204", nombre: "Práctica I: interacción con el contexto educativo", creditos: 2, prerequisitos: ["FPED126"], abre: [], nota: 0 },
-                { codigo: "QQUI202", nombre: "Química general II", creditos: 8, prerequisitos: ["QQUI101"], abre: [], nota: 0 },
-                { codigo: "FPED214", nombre: "Reflexión crítica y filosófica de los procesos educativos", creditos: 4, prerequisitos: [], abre: [], nota: 0 },
-                { codigo: "QQUI205", nombre: "Física I", creditos: 5, prerequisitos: ["QQUI02"], abre: ["QQUI301"], nota: 0 },
-                { codigo: "QQUI203", nombre: "Informática aplicada", creditos: 3, prerequisitos: [], abre: [], nota: 0 },
-                { codigo: "QQUI201", nombre: "Matemática II", creditos: 4, prerequisitos: ["QQUI02"], abre: ["QQUI304"], nota: 0 },
-                { codigo: "FPED213", nombre: "Contextos socioculturales de los procesos educativos", creditos: 4, prerequisitos: [], abre: [], nota: 0 }
+                { codigo: "QQUI204",
+                 nombre: "Práctica I: interacción con el contexto educativo",
+                 creditos: 2,
+                 prerequisitos: ["FPED126"],
+                 abre: [],
+                 nota: 0
+                },
+                { codigo: "QQUI202",
+                 nombre: "Química general II",
+                 creditos: 8,
+                 prerequisitos: ["QQUI101"],
+                 abre: [],
+                 nota: 0 
+                },
+                { codigo: "FPED214",
+                 nombre: "Reflexión crítica y filosófica de los procesos educativos",
+                 creditos: 4,
+                 prerequisitos: [],
+                 abre: [],
+                 nota: 0
+                },
+                { codigo: "QQUI205",
+                 nombre: "Física I",
+                 creditos: 5,
+                 prerequisitos: ["QQUI02"],
+                 abre: ["QQUI301"],
+                 nota: 0 },
+                { codigo: "QQUI203",
+                 nombre: "Informática aplicada",
+                 creditos: 3,
+                 prerequisitos: [],
+                 abre: [],
+                 nota: 0
+                },
+                { codigo: "QQUI201",
+                 nombre: "Matemática II",
+                 creditos: 4,
+                 prerequisitos: ["QQUI02"],
+                 abre: ["QQUI304"],
+                 nota: 0
+                },
+                { codigo: "FPED213",
+                 nombre: "Contextos socioculturales de los procesos educativos",
+                 creditos: 4,
+                 prerequisitos: [],
+                 abre: [], 
+                 nota: 0 
+                }
             ]
         },
         // Tercer semestre
