@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Pedagogía en Química</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Malla Curricular - Pedagogía en Química</h1>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <h3>Créditos Aprobados</h3>
+                <p id="creditos-aprobados">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Promedio General</h3>
+                <p id="promedio-general">0.0</p>
+            </div>
+        </div>
+        
+        <div class="semesters-container" id="semesters-container">
+            <!-- Los semestres se generarán dinámicamente con JavaScript -->
+        </div>
+        
+        <div class="modal" id="grade-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="modal-title">Editar Nota</h2>
+                <input type="number" id="grade-input" min="1" max="7" step="0.1" placeholder="Ingrese nota (1.0-7.0)">
+                <button id="save-grade">Guardar</button>
+            </div>
+        </div>
+        
+        <div class="modal" id="electivo-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Agregar Ramo Optativo</h2>
+                <input type="text" id="electivo-name" placeholder="Nombre del ramo">
+                <input type="number" id="electivo-credits" min="1" max="10" placeholder="Créditos">
+                <button id="save-electivo">Agregar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
